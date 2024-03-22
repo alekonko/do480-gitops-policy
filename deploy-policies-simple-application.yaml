@@ -1,12 +1,26 @@
-apiVersion: v1                    
+---
+apiVersion: v1
 kind: Namespace
 metadata:
-  name: policies-postconfig-deploy                             
+  name: policies-postconfig-deploy                
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  annotations:
+    apps.open-cluster-management.io/reconcile-rate: high
+    open-cluster-management.io/user-group: YWRtaW5zLHRydXN0IGFkbWlucyxzeXN0ZW06YXV0aGVudGljYXRlZDpvYXV0aCxzeXN0ZW06YXV0aGVudGljYXRlZA==
+    open-cluster-management.io/user-identity: YWRtaW4=
+  name: do480-gitops-policy
+  namespace: policies-postconfig-deploy
+spec:
+  pathname: https://github.com/alekonko/do480-gitops-policy.git
+  type: Git
 ---
 apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
-  name: deploy-simple-deploy-cluster-postconfig-policies
+  name: deploy-postconfig
   namespace: policies-postconfig-deploy
 spec:
   componentKinds:
@@ -18,7 +32,7 @@ spec:
       - key: app
         operator: In
         values: 
-          - deploy-simple-deploy-cluster-postconfig-policies
+          - policies-postconfig-deploy
 ---
 apiVersion: v1                      
 kind: Namespace
@@ -44,22 +58,22 @@ metadata:
     apps.open-cluster-management.io/git-path: simple-deploy/
     apps.open-cluster-management.io/reconcile-option: merge
   labels:
-    app: deploy-simple-deploy-cluster-postconfig-policies
-  name: deploy-simple-deploy-cluster-postconfig-policies-subscription-1
+    app: policies-postconfig-deploy
+  name: policies-postconfig-deploy-subscription
   namespace: policies-postconfig-deploy
 spec:
   channel: ggithubcom-alekonko-do480-gitops-policy-ns/ggithubcom-alekonko-do480-gitops-policy
   placement:
     placementRef:
       kind: PlacementRule
-      name: deploy-postconfig-policies-placement-1
+      name: deploy-postconfig-policies-placement
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   labels:
-    app: deploy-simple-deploy-cluster-postconfig-policies
-  name: deploy-simple-deploy-cluster-postconfig-policies-placement-1
+    app: policies-postconfig-deploy
+  name: policies-postconfig-deploy-placement
   namespace: policies-postconfig-deploy
 spec:
   clusterSelector:

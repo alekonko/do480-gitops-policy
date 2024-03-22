@@ -12,8 +12,8 @@ metadata:
   name: do480-gitops-policy
   namespace: policies-postconfig-deploy
 spec:
-  pathname: https://github.com/alekonko/do480-gitops-policy.git
   type: Git
+  pathname: 'https://github.com/alekonko/do480-gitops-policy.git'
 ---
 apiVersion: app.k8s.io/v1beta1
 kind: Application
