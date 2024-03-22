@@ -1,0 +1,20 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: install-operators-policies
+policyDefaults:
+  namespace: policies-postconfig
+  remediationAction: enforce
+  placement:
+    name: placement-postconfig-cluster-prod
+    clusterSelectors:
+      postconfig: "true"
+placementBindingDefaults:
+  name: binding-postconfig-cluster-prod
+policies:
+  - name: install-gitops-operator
+    manifests:
+      - path: gitops-operator/gitops-operator-subscription.yaml
+  - name: install-compliance-operator
+    manifests:
+      - path: compliance-operator/compliance-operator.yaml 

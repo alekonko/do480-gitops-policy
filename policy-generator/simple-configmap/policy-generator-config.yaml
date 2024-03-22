@@ -1,0 +1,18 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: config-data-policies
+policyDefaults:
+  namespace: policies-postconfig
+  remediationAction: enforce
+  placement:
+    name: placement-config-data-sample
+    clusterSelectors:
+      postconfig: "true"
+placementBindingDefaults:
+  name: binding-config-data-sample
+policies:
+  - name: config-data-sample
+    manifests:
+      - path: configmap.yaml
+
